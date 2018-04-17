@@ -47,14 +47,14 @@ def receive():
     print MyAnswers
     print MyQuestions
     print MySection
-    for i in range(0,(len(MySection))):
+    for i in range(0,(len(MyLength))):
         s = int(MyLength[i])
         for j in range(0,s):
             MyDict3[MyAnswers[j]]=MyQuestions[j]
         MyAnswers = MyAnswers[s:]
         MyQuestions = MyQuestions[s:]
         for l in range(0,1):
-            MyDict2[MyLength[l]]=MyDict3
+            MyDict2[MyLength[i]]=MyDict3
         print MyDict2
         MyDict1[MySection[i]]=MyDict2
         print MyDict1
@@ -97,7 +97,7 @@ def store(n):
             e = a[b[p]]
             for ee in range(0,(len(e))):
                 r.write(e[ee])
-        r.write("\n")
+            r.write("\n")
         r.close()
         r = open("number.txt","a")
         a1 = len(a)
@@ -201,7 +201,7 @@ def createq(o):
         MyQuestions.append(q)
     for j in range (0,add1):
         s[MyAnswers[j]] = MyQuestions[j]
-    total = add1+v
+    total = add1+(int(v))
     p[total] = s
     del p[v]
     print p
