@@ -1,68 +1,200 @@
 # CSC-CYEN-2018-Project
 A Project  For CSC/CYEN
-import abc
+from Tkinter import *
 
-class Notecard(object):
-    def __init__(self, number):
-        self.number = number
+class Jeopardy(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent, bg="white")
+        #parent.attributes("-fullscreen", True)
+        self.setupGUI()
 
-    @property
-    def number(self):
-        return self._number
+    def setupGUI(self):
+        self.display = Label(self, text="", anchor=E, bg="white", height=2, width=15)
+        self.display.grid(row=0, column=0, columnspan=5, sticky=E+W+N+S)
 
-    @number.setter
-    def number(self, value):
-        self._number = value
+        for row in range(6):
+            Grid.rowconfigure(self, row, weight=1)
+        for col in range(6):
+            Grid.columnconfigure(self, col, weight=1)
 
-    @abc.abstractmethod   
-    def makeNotecard(self, number):
-        """ make notecard """
-        
+        # easy label
+        img = PhotoImage(file="easy.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=0, columnspan=2, sticky=N+S+E+W)
 
-class Easy(Notecard):
-    def __init__(self, number):
-        self.number = number
-        Notecard.__init__(self, number)
+        # medium label
+        img = PhotoImage(file="medium.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=2, columnspan=2, sticky=N+S+E+W)
 
-    def makeNotecard(self, number):
-        easy = {}
-        for i in range(self.number):
-            question = input("Enter a question: ")
-            answer = input("Enter an answer: ")
-            easy[question] = answer
+        # hard label
+        img = PhotoImage(file="hard.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=4, columnspan=2, sticky=N+S+E+W)
 
-class Medium(Notecard):
-    def __init__(self, number):
-        self.number = number
-        Notecard.__init__(self, number)
+        # $100 column
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=0, sticky=N+S+E+W)
 
-    def makeNotecard(self, number):
-        medium = {}
-        for i in range(self.number):
-            question = input("Enter a question: ")
-            answer = input("Enter an answer: ")
-            medium[question] = answer
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=0, sticky=N+S+E+W)
 
-class Hard(Notecard):
-    def __init__(self, number):
-        self.number = number
-        Notecard.__init__(self, number)
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=0, sticky=N+S+E+W)
 
-    def makeNotecard(self, number):
-        hard = {}
-        for i in range(self.number):
-            question = input("Enter a question: ")
-            answer = input("Enter an answer: ")
-            hard[question] = answer
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=0, sticky=N+S+E+W)
+
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=0, sticky=N+S+E+W)
+
+        # $200 column
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=1, sticky=N+S+E+W)
+
+        # $300 column
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=2, sticky=N+S+E+W)
+
+        # $400 column
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=3, sticky=N+S+E+W)
+
+        # $500 column
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=4, sticky=N+S+E+W)
+
+        # $600 column
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=1, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=2, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=3, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=4, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=5, column=5, sticky=N+S+E+W)
+
+        self.pack(fill=BOTH, expand=1)
 
 
-
-e = input("How many easy level questions do you wish to enter? ")
-easy = Easy(e)
-easy.makeNotecard(e)
-m = input("How many medium level questions do you wish to enter? ")
-medium = Medium(m)
-medium.makeNotecard(m)
-h = input("How many hard level questions do you wish to enter? ")
-hard = Hard(h)
-hard.makeNotecard(h)
+window = Tk()
+window.title("Make Studying Fun Again")
+j = Jeopardy(window)
+window.mainloop()
