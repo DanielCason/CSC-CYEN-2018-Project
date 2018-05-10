@@ -1,0 +1,666 @@
+# CSC-CYEN-2018-Project
+#A Project  For CSC/CYEN
+
+from Tkinter import *
+import RPi.GPIO as GPIO
+from random import randint, choice
+import Tkinter as tk
+from notecard_gui import *
+from time import *
+import sys
+
+class Jeopardy(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent, bg="white")
+        #parent.attributes("-fullscreen", True)
+        self.setupGUI()
+        self.score = 0
+        self.easytracker100 = []
+        self.easytracker200 = []
+        self.easynum = 0
+        self.easycount100 = 0
+        self.easycount200 = 0
+        self.mediumtracker300 = []
+        self.mediumtracker400 = []
+        self.mediumnum = 0
+        self.mediumcount300 = 0
+        self.mediumcount400 = 0
+        self.hardtracker500 = []
+        self.hardtracker600 = []
+        self.hardnum = 0
+        self.hardcount500 = 0
+        self.hardcount600 = 0
+        self.easykey = []
+        self.easyvalue = []
+        self.mediumkey = []
+        self.mediumvalue = []
+        self.hardkey = []
+        self.hardvalue = []
+        self.entered = 0
+
+    #function within the class
+    def easykeepingTrack100(self,key):
+        try:
+            if (self.easycount100==0):
+                self.easytracker100 = []
+                for i in range (len(key)):
+                    self.easytracker100.append(key[i])
+            if(self.easycount100<5):
+                n = choice(self.easytracker100)
+                for i in range(len(self.easykey)):
+                    if(n == self.easykey[i]):
+                        self.easynum = i
+                self.easytracker100.remove(n)
+                self.easycount100 +=1
+                self.entered = 0
+                return n
+            else:
+                self.easycount100 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+    def easykeepingTrack200(self,key):
+        try:
+            if (self.easycount200==0):
+                self.easytracker200 = []
+                for i in range (len(key)):
+                    self.easytracker200.append(key[i])
+            if(self.easycount200<5):
+                n = choice(self.easytracker200)
+                for i in range(len(self.easykey)):
+                    if(n == self.easykey[i]):
+                         self.easynum = i
+                self.easytracker200.remove(n)
+                self.easycount200 +=1
+                self.entered = 0
+                return n
+            else:
+                self.easycount200 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def mediumkeepingTrack300(self,key):
+        try:
+            if (self.mediumcount300==0):
+                self.mediumtracker300 = []
+                for i in range (len(key)):
+                    self.mediumtracker300.append(key[i])
+            if(self.mediumcount300<5):
+                n = choice(self.mediumtracker300)
+                for i in range(len(self.mediumkey)):
+                    if(n == self.mediumkey[i]):
+                        self.mediumnum = i
+                self.mediumtracker300.remove(n)
+                self.mediumcount300 +=1
+                self.entered = 0
+                return n
+            else:
+                self.mediumcount300 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def mediumkeepingTrack400(self,key):
+        try:
+            if (self.mediumcount400==0):
+                self.mediumtracker400 = []
+                for i in range (len(key)):
+                    self.mediumtracker400.append(key[i])
+            if(self.mediumcount400<5):
+                n = choice(self.mediumtracker400)
+                for i in range(len(self.mediumkey)):
+                    if(n == self.mediumkey[i]):
+                        self.mediumnum = i
+                self.mediumtracker400.remove(n)
+                self.mediumcount400 +=1
+                self.entered = 0
+                return n
+            else:
+                self.mediumcount400 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def hardkeepingTrack500(self,key):
+        try:
+            if (self.hardcount500==0):
+                self.hardtracker500 = []
+                for i in range (len(key)):
+                    self.hardtracker500.append(key[i])
+            if(self.hardcount500<5):
+                n = choice(self.hardtracker500)
+                for i in range(len(self.hardkey)):
+                    if(n == self.hardkey[i]):
+                        self.hardnum = i
+                self.hardtracker500.remove(n)
+                self.hardcount500 +=1
+                self.entered = 0
+                return n
+            else: self.hardcount500 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def hardkeepingTrack600(self,key):
+        try:
+            if (self.hardcount600==0):
+                self.hardtracker600 = []
+                for i in range (len(key)):
+                    self.hardtracker600.append(key[i])
+            if(self.hardcount600<5):
+                n = choice(self.hardtracker600)
+                for i in range(len(self.hardkey)):
+                    if(n == self.hardkey[i]):
+                        self.hardnum = i
+                self.hardtracker600.remove(n)
+                self.hardcount600 +=1
+                self.entered = 0
+                return n
+            else:
+                self.hardcount600 = 6
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def setupGUI(self):
+        self.display = Label(self, text="", anchor=E, bg="white", height=2, width=15)
+        self.display.grid(row=0, column=0, columnspan=5, sticky=E+W+N+S)
+
+        for row in range(6):
+            Grid.rowconfigure(self, row, weight=1)
+        for col in range(6):
+            Grid.columnconfigure(self, col, weight=1)
+
+        # easy label
+        img = PhotoImage(file="easy.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=0, columnspan=2, sticky=N+S+E+W)
+
+        # medium label
+        img = PhotoImage(file="medium.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=2, columnspan=2, sticky=N+S+E+W)
+
+        # hard label
+        img = PhotoImage(file="hard.gif")
+        button = Button(self, bg="white", image=img)
+        button.image = img
+        button.grid(row=0, column=4, columnspan=2, sticky=N+S+E+W)
+
+        # $100 column
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img, command=self.easy100)
+        button.image = img
+        button.grid(row=1, column=0, sticky=N+S+E+W)
+
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img, command=self.easy100)
+        button.image = img
+        button.grid(row=2, column=0, sticky=N+S+E+W)
+
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img, command=self.easy100)
+        button.image = img
+        button.grid(row=3, column=0, sticky=N+S+E+W)
+
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img, command=self.easy100)
+        button.image = img
+        button.grid(row=4, column=0, sticky=N+S+E+W)
+
+        img = PhotoImage(file="100.gif")
+        button = Button(self, bg="white", image=img, command=self.easy100)
+        button.image = img
+        button.grid(row=5, column=0, sticky=N+S+E+W)
+
+        # $200 column
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img, command=self.easy200)
+        button.image = img
+        button.grid(row=1, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img, command=self.easy200)
+        button.image = img
+        button.grid(row=2, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img, command=self.easy200)
+        button.image = img
+        button.grid(row=3, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img, command=self.easy200)
+        button.image = img
+        button.grid(row=4, column=1, sticky=N+S+E+W)
+
+        img = PhotoImage(file="200.gif")
+        button = Button(self, bg="white", image=img, command=self.easy200)
+        button.image = img
+        button.grid(row=5, column=1, sticky=N+S+E+W)
+
+        # $300 column
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img, command=self.medium300)
+        button.image = img
+        button.grid(row=1, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img, command=self.medium300)
+        button.image = img
+        button.grid(row=2, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img, command=self.medium300)
+        button.image = img
+        button.grid(row=3, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img, command=self.medium300)
+        button.image = img
+        button.grid(row=4, column=2, sticky=N+S+E+W)
+
+        img = PhotoImage(file="300.gif")
+        button = Button(self, bg="white", image=img, command=self.medium300)
+        button.image = img
+        button.grid(row=5, column=2, sticky=N+S+E+W)
+
+        # $400 column
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img, command=self.medium400)
+        button.image = img
+        button.grid(row=1, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img, command=self.medium400)
+        button.image = img
+        button.grid(row=2, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img, command=self.medium400)
+        button.image = img
+        button.grid(row=3, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img, command=self.medium400)
+        button.image = img
+        button.grid(row=4, column=3, sticky=N+S+E+W)
+
+        img = PhotoImage(file="400.gif")
+        button = Button(self, bg="white", image=img, command=self.medium400)
+        button.image = img
+        button.grid(row=5, column=3, sticky=N+S+E+W)
+
+        # $500 column
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img, command=self.hard500)
+        button.image = img
+        button.grid(row=1, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img, command=self.hard500)
+        button.image = img
+        button.grid(row=2, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img, command=self.hard500)
+        button.image = img
+        button.grid(row=3, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img, command=self.hard500)
+        button.image = img
+        button.grid(row=4, column=4, sticky=N+S+E+W)
+
+        img = PhotoImage(file="500.gif")
+        button = Button(self, bg="white", image=img, command=self.hard500)
+        button.image = img
+        button.grid(row=5, column=4, sticky=N+S+E+W)
+
+        # $600 column
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img, command=self.hard600)
+        button.image = img
+        button.grid(row=1, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img, command=self.hard600)
+        button.image = img
+        button.grid(row=2, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img, command=self.hard600)
+        button.image = img
+        button.grid(row=3, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img, command=self.hard600)
+        button.image = img
+        button.grid(row=4, column=5, sticky=N+S+E+W)
+
+        img = PhotoImage(file="600.gif")
+        button = Button(self, bg="white", image=img, command=self.hard600)
+        button.image = img
+        button.grid(row=5, column=5, sticky=N+S+E+W)
+
+        self.pack(fill=BOTH, expand=1)
+###########################################################################################
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(17, GPIO.OUT)
+    GPIO.setup(20, GPIO.OUT)
+
+    def easy100(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.easyvalue[self.easynum]):
+                    if (self.easycount100<=5 and self.entered == 0):
+                        self.score = self.score + 100
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "There are no more questions for this column")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.easykeepingTrack100(self.easykey[:(len(self.easykey)/2)]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def easy200(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.easyvalue[self.easynum]):
+                    if(self.easycount200<=5 and self.entered == 0):
+                        self.score = self.score + 200
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "There are no more questions for this column")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.easykeepingTrack200(self.easykey[(len(self.easykey)/2):]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def medium300(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.mediumvalue[self.mediumnum]):
+                    if(self.mediumcount300 <= 5 and self.entered == 0):
+                        self.score = self.score + 300
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "There are no more questions for this column")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.mediumkeepingTrack300(self.mediumkey[:(len(self.mediumkey)/2)]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def medium400(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.mediumvalue[self.mediumnum]):
+                    if(self.mediumcount400<=5 and self.entered == 0):
+                        self.score = self.score + 400
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "There are no more questions for this column")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.mediumkeepingTrack400(self.mediumkey[(len(self.mediumkey)/2):]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again"
+
+    def hard500(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.hardvalue[self.hardnum]):
+                    if(self.hardcount500<=5 and self.entered == 0):
+                        self.score = self.score + 500
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "There are no more questions for this column")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.hardkeepingTrack500(self.hardkey[:(len(self.hardkey)/2)]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+
+    def hard600(self):
+        root = Tk()
+        def process(event):
+            try:
+                action = Jeopardy.user_input.get()
+                if (action == self.hardvalue[self.hardnum]):
+                    if(self.hardcount600<=5 and self.entered == 0):
+                        self.score = self.score + 600
+                        T2.configure(text = action)
+                        T3.configure(text = "Current score: " + str(self.score))
+                        self.entered = 1
+                        GPIO.output(20, GPIO.HIGH)
+                        sleep(0.5)
+                        GPIO.output(20, GPIO.LOW)
+                        sleep(0.5)
+                    else:
+                        T2.configure(text = "stuff")
+                else:
+                    T2.configure(text = "Answer is wrong.")
+                    GPIO.output(17, GPIO.HIGH)
+                    sleep(0.5)
+                    GPIO.output(17, GPIO.LOW)
+                    sleep(0.5)
+            except: 
+                print "#"*70
+                print "There seemed to have been an error. Please try again."
+
+        try:
+            label = ('helvetica', 15)
+            Jeopardy.user_input = Entry(root, font=label, bg="white")
+            Jeopardy.user_input.bind("<Return>", process)
+            Jeopardy.user_input.pack(side=BOTTOM, fill=X)
+            Jeopardy.user_input.focus()
+
+            label_font = ('helvetica', 50)
+            T1 = Label(root, text=self.hardkeepingTrack600(self.hardkey[(len(self.hardkey)/2):]), font=label_font, bg="white", fg="blue")
+            T1.pack(side=BOTTOM, fill=BOTH)
+            T1.pack_propagate(False)
+
+            label_font = ('helvetica', 50)
+            T2 = Label(root, font=label_font, bg="white", fg="red")
+            T2.pack(side=BOTTOM, fill=X)
+            T2.pack_propagate(False)
+            
+            label_font = ('helvetica', 50)
+            T3 = Label(root, font=label_font, bg="white", fg="green")
+            T3.pack(side=BOTTOM, fill=X)
+            T3.pack_propagate(False)
+        except:
+            print "#"*70
+            print "There seemed to have been an error. Please try again."
+        
+        root.mainloop()
